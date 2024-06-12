@@ -149,7 +149,11 @@ fun CustomDialog(
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
+                            unfocusedIndicatorColor = Color.Transparent,
+                            errorTextColor = Color.Red,
+                            focusedTextColor = Color.Black,
+                            disabledTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black
                         ),
                         leadingIcon = {
                             Icon(

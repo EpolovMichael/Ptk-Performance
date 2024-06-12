@@ -52,7 +52,7 @@ class StudentScreenViewModel @Inject constructor(
     ) = CoroutineScope(Dispatchers.IO).launch {
             val markData = mapOf(
                 "date" to date,
-                "attendance" to "-",
+                "attendance" to "Н",
                 "disciplineName" to disciplineName,
                 "groupNumber" to groupNumber,
                 "studentNumber" to student.firstName.toString(),
@@ -84,7 +84,7 @@ class StudentScreenViewModel @Inject constructor(
     ) = CoroutineScope(Dispatchers.IO).launch {
             val markData = mapOf(
                 "date" to date,
-                "attendance" to "+",
+                "attendance" to "П",
                 "disciplineName" to disciplineName,
                 "groupNumber" to groupNumber,
                 "studentNumber" to student.firstName.toString(),
