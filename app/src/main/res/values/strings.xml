@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Ptk-Performance</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="enter_your_credential_s_to_register">Введите свои данные для регистрации</string>
+    <string name="enter_email">Введите почту*</string>
+    <string name="enter_password">Введите пароль*</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="already_have_an_account_sign_in">Уже есть аккаунт? Войти</string>
+    <string name="enter_your_credential_s_to_login">Введите свои данные для входа</string>
+    <string name="sign_in">Войти</string>
+    <string name="not_registered_yet_create_an_account">Еще нет аккаунта? Зарегестрироваться</string>
+    <string name="registration">Регистрация</string>
+    <string name="enter_the_student_s_mark">Введите оценку студента</string>
+    <string name="student_s_mark">Оценка студента</string>
+    <string name="done">Готово</string>
+    <string name="select_a_date">Выберите дату</string>
+    <string name="date_selection">Выбор даты</string>
+</resources>

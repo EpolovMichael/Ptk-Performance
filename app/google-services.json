@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "699488772487",
+    "firebase_url": "https://ptkstudentsperformance-9d43f-default-rtdb.firebaseio.com",
+    "project_id": "ptkstudentsperformance-9d43f",
+    "storage_bucket": "ptkstudentsperformance-9d43f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699488772487:android:2c3e7d9ced01f98f147322",
+        "android_client_info": {
+          "package_name": "com.example.firebaseauthtest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGFTSLhhEOUzRb4Av8DFt0K0ijAr-4Fp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

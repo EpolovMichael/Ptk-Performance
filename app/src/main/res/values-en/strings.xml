@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ptk-Performance</string>
+    <string name="create_account">Create Account</string>
+    <string name="enter_your_credential_s_to_register">Enter your credential\'s to register</string>
+    <string name="enter_email">Enter Email*</string>
+    <string name="enter_password">Enter Password*</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account_sign_in">Already Have an account? sign In</string>
+    <string name="enter_your_credential_s_to_login">Enter your credential\'s to login</string>
+    <string name="sign_in">Sign In</string>
+    <string name="not_registered_yet_create_an_account">Not registered yet? Create an account.</string>
+    <string name="registration">Registration</string>
+    <string name="enter_the_student_s_mark">Enter the student\'s mark</string>
+    <string name="student_s_mark">Student\'s mark</string>
+    <string name="done">Done</string>
+    <string name="select_a_date">Select a date</string>
+    <string name="date_selection">Date selection</string>
+</resources>

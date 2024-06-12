@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.NovguSplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/blue_light</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.FireBaseAuthTest</item>
+    </style>
+    <style name="Theme.FireBaseAuthTest" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
