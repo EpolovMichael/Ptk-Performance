@@ -70,7 +70,6 @@ fun SignInScreen(
         mutableStateOf(false)
     }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -135,8 +134,10 @@ fun SignInScreen(
             Button(
                 onClick = {
                     if (viewModel.checkUserReg()) {
-                        viewModel.checkUserRole()
-                        navController.navigate(Screens.ContentScreen.route)
+                        scope.launch {
+                            viewModel.invokeCheckUserRole()
+                            navController.navigate(Screens.ContentScreen.route)
+                        }
                     } else {
                         scope.launch {
                             viewModel.loginUser(email, password, context)

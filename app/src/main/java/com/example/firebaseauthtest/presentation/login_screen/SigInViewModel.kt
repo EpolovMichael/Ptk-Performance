@@ -57,8 +57,7 @@ class SignInViewModel @Inject constructor(
         authRepository.loginUser(email, password, context).collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    _signInState.send(SignInState(isSuccess = "Sign In Success"))
-                    checkUserReg()
+                    checkUserRoleAndSetState()
                 }
                 is Resource.Loading -> {
                     _signInState.send(SignInState(isLoading = true))
@@ -70,22 +69,30 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun checkUserRole() = viewModelScope.launch {
+    private suspend fun checkUserRole() {
         authRepository.getUsersRole { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val userRole = resource.data
                     userRole?.let { changeUserRole(it) }
-                    //Log.d("MyTag", " user role 2 = $userRole")
                 }
                 is Resource.Error -> {
                     val errorMessage = resource.message
-                    //Log.d("MyTag", " user role 2 error = $errorMessage ")
+                    Log.d("MyTag", "user role error = $errorMessage")
                 }
                 is Resource.Loading -> {
 
                 }
             }
         }
+    }
+
+    private fun checkUserRoleAndSetState() = viewModelScope.launch {
+        checkUserRole()
+        _signInState.send(SignInState(isSuccess = "Sign In Success"))
+    }
+
+    fun invokeCheckUserRole() = viewModelScope.launch {
+        checkUserRole()
     }
 }

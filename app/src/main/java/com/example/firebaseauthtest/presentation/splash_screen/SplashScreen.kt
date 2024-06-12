@@ -25,7 +25,7 @@ fun SplashScreen(
 ) {
     LaunchedEffect(true) {
         if (viewModel.checkUserReg()) {
-            viewModel.checkUserRole()
+            viewModel.invokeCheckUserRole()
             delay(2000)
             navController.navigate(Screens.ContentScreen.route)
         } else {
