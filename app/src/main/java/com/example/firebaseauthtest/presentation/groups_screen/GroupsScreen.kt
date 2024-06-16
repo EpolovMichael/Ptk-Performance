@@ -81,7 +81,7 @@ fun GroupsScreen(
             Text(text = "Нет подключения к интернету", modifier = Modifier.padding(16.dp))
         }
     } else {
-        val listOfStudents2 = listOf(
+        /*val listOfStudents2 = listOf(
             Student(
                 "1",
                 "Абакумова Анжелика Александровна",
@@ -236,9 +236,9 @@ fun GroupsScreen(
                 patronymic = null,
                 groupNumber = "0901"
             ),
-        )
+        )*/
 
-        val mapOfStudentsByGroupNumber = listOfStudents2.groupBy { it.groupNumber }
+        //val mapOfStudentsByGroupNumber = listOfStudents2.groupBy { it.groupNumber }
 
         val listOfStudents = remember {
             mutableStateOf<List<Student>>(emptyList())

@@ -249,7 +249,7 @@ fun SignUpScreen(
                     .padding(top = 20.dp, start = 30.dp, end = 30.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Blue40,
-                    contentColor = MaterialTheme.colorScheme.inversePrimary // Что это?
+                    contentColor = MaterialTheme.colorScheme.inversePrimary
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {

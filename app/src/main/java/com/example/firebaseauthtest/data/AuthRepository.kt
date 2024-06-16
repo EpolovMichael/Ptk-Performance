@@ -10,7 +10,9 @@ interface AuthRepository {
     fun registerUser(email: String, password: String): Flow<Resource<AuthResult>>
     fun checkUser(): Boolean
     fun getUsersRole(callback: (Resource<String>) -> Unit)
+    fun getUsersData(callback: (Resource<String>) -> Unit)
     suspend fun getUserPermissions(): Flow<UserPermissionsResult>
     suspend fun setUserRole(userId: String, role: String): Resource<Unit>
+    suspend fun logoutUser(): Resource<Unit>
     fun getUser(): String
 }

@@ -43,12 +43,7 @@ class StudentScreenViewModel @Inject constructor(
         roomRepository.delete(mark)
     }*/
 
-    fun markStudentAsAbsent(
-        student: Student,
-        date: String,
-        disciplineName: String,
-        groupNumber: String?,
-        theme: String
+    fun markStudentAsAbsent(student: Student, date: String,disciplineName: String, groupNumber: String?, theme: String
     ) = CoroutineScope(Dispatchers.IO).launch {
             val markData = mapOf(
                 "date" to date,
@@ -58,7 +53,6 @@ class StudentScreenViewModel @Inject constructor(
                 "studentNumber" to student.firstName.toString(),
                 "theme" to theme
             )
-
             fireStore.collection("attendance")
                 .add(markData)
                 .addOnSuccessListener { documentReference ->
@@ -75,12 +69,7 @@ class StudentScreenViewModel @Inject constructor(
                 }
         }
 
-    fun markStudentAsPresent(
-        student: Student,
-        date: String,
-        disciplineName: String,
-        groupNumber: String?,
-        theme: String
+    fun markStudentAsPresent(student: Student, date: String, disciplineName: String, groupNumber: String?, theme: String
     ) = CoroutineScope(Dispatchers.IO).launch {
             val markData = mapOf(
                 "date" to date,
@@ -90,7 +79,6 @@ class StudentScreenViewModel @Inject constructor(
                 "studentNumber" to student.firstName.toString(),
                 "theme" to theme
             )
-
             fireStore.collection("attendance")
                 .add(markData)
                 .addOnSuccessListener { documentReference ->

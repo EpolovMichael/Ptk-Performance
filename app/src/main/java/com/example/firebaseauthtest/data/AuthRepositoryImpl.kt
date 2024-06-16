@@ -35,8 +35,9 @@ class AuthRepositoryImpl @Inject constructor(
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             result.user?.let { StoreUserData(context).saveUserRole(it.uid) }
             emit(Resource.Success(result))
-        }.catch {
-            emit(Resource.Error(it.message.toString()))
+        }.catch { exception ->
+            Log.e("AuthRepository", "Login error: ${exception.message}")
+            emit(Resource.Error(exception.message.toString()))
         }
     }
 
@@ -45,21 +46,23 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Loading())
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             emit(Resource.Success(result))
-        }.catch {
-            emit(Resource.Error(it.message.toString()))
+        }.catch { exception ->
+            Log.e("AuthRepository", "Registration error: ${exception.message}")
+            emit(Resource.Error(exception.message.toString()))
         }
     }
 
-    override fun getUsersRole(callback: (Resource<String>) -> Unit) {
+    override fun getUsersData(callback: (Resource<String>) -> Unit) {
         val currentUser = firebaseAuth.currentUser
-        currentUser?.let { user ->
-            val userRoleRef = dataBase.child(user.uid).child("role")
+        if (currentUser != null) {
+            val userRoleRef = dataBase.child(currentUser.uid).child("name")
             userRoleRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val role = snapshot.getValue(String::class.java)
-                    role?.let {
-                        callback(Resource.Success(it))
-                    } ?: run {
+                    if (role != null) {
+                        Log.d("MyLog", "onDataChange12312: $role")
+                        callback(Resource.Success(role))
+                    } else {
                         callback(Resource.Error("User role not found"))
                     }
                 }
@@ -68,7 +71,31 @@ class AuthRepositoryImpl @Inject constructor(
                     callback(Resource.Error(error.message))
                 }
             })
-        } ?: run {
+        } else {
+            callback(Resource.Error("User not authenticated"))
+        }
+    }
+
+    override fun getUsersRole(callback: (Resource<String>) -> Unit) {
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser != null) {
+            val userRoleRef = dataBase.child(currentUser.uid).child("role")
+            userRoleRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val role = snapshot.getValue(String::class.java)
+                    if (role != null) {
+                        Log.d("MyLog", "onDataChange12312: $role")
+                        callback(Resource.Success(role))
+                    } else {
+                        callback(Resource.Error("User role not found"))
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(Resource.Error(error.message))
+                }
+            })
+        } else {
             callback(Resource.Error("User not authenticated"))
         }
     }
@@ -77,10 +104,10 @@ class AuthRepositoryImpl @Inject constructor(
         return flow {
             emit(UserPermissionsResult.Loading())
             val currentUser = firebaseAuth.currentUser
-            currentUser?.let { user ->
+            if (currentUser != null) {
                 try {
                     val permissionValue = suspendCoroutine<Map<String, List<String>>?> { continuation ->
-                        dataBase.child(user.uid).child("permission").get()
+                        dataBase.child(currentUser.uid).child("permission").get()
                             .addOnSuccessListener { dataSnapshot ->
                                 val permissionValue = dataSnapshot.value as? Map<String, List<String>>?
                                 continuation.resume(permissionValue)
@@ -92,9 +119,26 @@ class AuthRepositoryImpl @Inject constructor(
                     Log.d("MyTag", "Serialized value $permissionValue")
                     emit(UserPermissionsResult.Success(permissionValue))
                 } catch (exception: Exception) {
+                    Log.e("AuthRepository", "Permission error: ${exception.message}")
                     emit(UserPermissionsResult.Error(exception.message))
                 }
+            } else {
+                emit(UserPermissionsResult.Error("User not authenticated"))
             }
+        }.catch { exception ->
+            Log.e("AuthRepository", "Flow error: ${exception.message}")
+            emit(UserPermissionsResult.Error(exception.message))
+        }
+    }
+
+    override suspend fun logoutUser(): Resource<Unit> {
+        return try {
+            val currentUser = firebaseAuth.currentUser
+            firebaseAuth.signOut()
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Log.e("AuthRepository", "Logout error: ${e.message}")
+            Resource.Error(e.message ?: "Failed to logout user")
         }
     }
 
@@ -104,6 +148,7 @@ class AuthRepositoryImpl @Inject constructor(
             userRoleRef.setValue(role).await()
             Resource.Success(Unit)
         } catch (e: Exception) {
+            Log.e("AuthRepository", "Set user role error: ${e.message}")
             Resource.Error(e.message ?: "Failed to set user role")
         }
     }

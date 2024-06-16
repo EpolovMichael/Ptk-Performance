@@ -2,11 +2,16 @@ package com.example.firebaseauthtest.presentation.navigation_container_screen
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.background
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Scaffold
@@ -22,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -42,11 +49,13 @@ import com.example.firebaseauthtest.ui.theme.Blue40
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContainerNavGraph(
+    navHostController: NavHostController,
     viewModel: NavigationContainerViewModel
 ) {
     val navController = rememberNavController()
     var topBarTitle by remember { mutableStateOf("") }
     val viewModell = hiltViewModel<StudentScreenViewModel>()
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel.topBarTitle) {
         viewModel.topBarTitle.collect { newTitle ->
@@ -72,7 +81,23 @@ fun ContainerNavGraph(
                     ProvideTextStyle(value = MaterialTheme.typography.titleMedium) {
                         Text(text = topBarTitle, color = Color.White)
                     }
-                })
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        if (navController.previousBackStackEntry != null){
+                            navController.popBackStack()
+                        } else{
+                            Toast.makeText(context, "Это последний экран", Toast.LENGTH_SHORT).show()
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                }
+            )
         },
         bottomBar = {
             BottomNavigationBar(navController)
@@ -97,11 +122,15 @@ fun ContainerNavGraph(
                         composable(route = Screens.Disciplines.route) {
                             DisciplinesScreen(navController, viewModel)
                         }
-                        composable(route = Screens.Themes.route){
+                        composable(route = Screens.Themes.route) {
                             ThemeScreen(navController, viewModel)
                         }
                         composable(route = Screens.Students.route) {
-                            StudentsScreen(navController, viewModel = viewModell, navigationViewModel = viewModel)
+                            StudentsScreen(
+                                navController,
+                                viewModel = viewModell,
+                                navigationViewModel = viewModel
+                            )
                         }
                         composable(route = Screens.Marks.route) {
                             MarksScreen(navController, viewModel)
@@ -112,11 +141,18 @@ fun ContainerNavGraph(
                         route = Screens.StartStudentRoute.route
                     ) {
                         composable(route = Screens.AttendanceCourses.route) {
-                            AttendanceGroupsView(navController)
+                            AttendanceGroupsView(navController, navController = navController, navigationViewModel = viewModel)
                         }
                     }
                 }
             }
         }
     )
+    BackHandler {
+        if (navController.previousBackStackEntry != null) {
+            navController.popBackStack()
+        } else {
+            Toast.makeText(context, "Это последний экран", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
